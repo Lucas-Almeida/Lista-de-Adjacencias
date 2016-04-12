@@ -1,0 +1,81 @@
+#include <iostream>
+#include <list>
+#include <algorithm> // função find
+
+using namespace std;
+
+class Grafo {
+    int V; // numero de vertices
+    list<int> *adj; // ponteiro para um array contendo as listas de adjacencias
+
+public:
+    Grafo(int V); //Construtor
+    void adicionaAresta(int v1, int v2); // adiciona uma aresta no grafo
+
+
+    // obtem o grau de saida de um vertice
+    //Grau de saida é o numero de arestas que saem de V
+    int obterGrauDeSaida(int V);
+
+    bool existeVizinho(int v1, int v2); // verifica se v2 é vizinho de v1
+
+};
+
+Grafo::Grafo(int V){
+    this->V = V; //atribui o numero de vertices
+    adj = new list<int>[V]; // cria as listas
+}
+
+void Grafo::adicionaAresta(int v1, int v2){
+
+    // adiciona vertice v2 a lista de vertices adjacentes de v1
+    adj[v1].push_back(v2);
+}
+
+int Grafo::obterGrauDeSaida(int v){
+    // retorna o tamanho da lista que é a quantidade de vizinhos
+    return adj[v].size();
+
+}
+// verifica de v2 é vizinho de v1
+bool Grafo::existeVizinho(int v1, int v2){
+    // Busca na lista de v1
+    // do começo .begin() ate o final ,end() passando v2. Se for diferente de adj[v1].end() é pq achou
+    if(find(adj[v1].begin(), adj[v1].end(), v2) != adj[v1].end()){
+        return true;
+    }else{
+        return false;
+    }
+};
+
+int main()
+{
+    // criando um grafo de 4 vertices
+    Grafo grafo(4);
+
+    // adicionando arestas
+
+    // saindo de 0 e chegando em 1
+    grafo.adicionaAresta(0,1);
+    grafo.adicionaAresta(0,3);
+    grafo.adicionaAresta(1,2);
+    grafo.adicionaAresta(3,1);
+    grafo.adicionaAresta(3,2);
+
+
+    //mostrando os graus de saida
+    cout << "Grau de saida do vertice 1:" << grafo.obterGrauDeSaida(1);
+
+    // verifica se existe vizinhos
+	if(grafo.existeVizinho(0, 1))
+		cout << "\n\n1 eh vizinho de 0\n";
+	else
+		cout << "\n\n1 NAO eh vizinho de 0\n";
+
+	if(grafo.existeVizinho(0, 2))
+		cout << "2 eh vizinho de 0\n";
+	else
+		cout << "2 NAO eh vizinho de 0\n";
+
+    return 0;
+}
